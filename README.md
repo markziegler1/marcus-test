@@ -1,15 +1,16 @@
-# Mark Ziegler - Personal Website
+# Yarn Haven - Yarn Webshop
 
-A modern, responsive personal website built with HTML, CSS, and JavaScript.
+A modern, responsive yarn webshop built with HTML, CSS, and JavaScript.
 
 ## Features
 
-- 🎨 Modern, clean design with smooth animations
-- 📱 Fully responsive for all devices
+- 🧶 Complete e-commerce functionality with shopping cart
+- 📱 Fully responsive design for all devices
 - ⚡ Fast loading with optimized assets
-- 🎯 Smooth scrolling navigation
-- 🌟 Interactive elements and hover effects
-- 📝 Easy to customize content
+- 🛒 Interactive shopping cart with quantity controls
+- 🌟 Smooth animations and hover effects
+- 💳 Demo checkout process
+- 📦 10 yarn and knitting accessory products
 
 ## Setup Instructions
 
@@ -80,35 +81,37 @@ markz.dk
 
 ### 3. Customization
 
-#### Update Personal Information
+#### Update Shop Information
 Edit `index.html` to update:
-- Your name and title
+- Shop name and branding
 - About section content
-- Project descriptions and links
-- Contact information (email, GitHub, LinkedIn)
+- Contact information (email, phone, social media)
 
 #### Update Contact Links
 In `index.html`, update these lines:
 ```html
-<a href="mailto:your.email@example.com" class="contact-link">Email</a>
-<a href="https://github.com/yourusername" class="contact-link">GitHub</a>
-<a href="https://linkedin.com/in/yourusername" class="contact-link">LinkedIn</a>
+<a href="mailto:hello@yarnhaven.com" class="contact-link">Email</a>
+<a href="tel:+1-555-0123" class="contact-link">Call</a>
+<a href="#" class="contact-link">Instagram</a>
 ```
 
 #### Customize Colors
 Edit `styles.css` to change the color scheme:
-- Primary blue: `#2563eb`
+- Primary purple: `#8b5cf6`
 - Gradient colors in `.hero` section
 - Background colors for sections
 
-#### Add Your Projects
-Replace the placeholder project cards in the HTML with your actual projects:
-```html
-<div class="project-card">
-    <h3>Your Project Name</h3>
-    <p>Description of your project.</p>
-    <a href="https://github.com/yourusername/project" class="project-link">View Project</a>
-</div>
+#### Add/Modify Products
+Edit the `products` array in `script.js` to add or modify products:
+```javascript
+{
+    id: 11,
+    name: "New Product",
+    description: "Product description",
+    price: 29.99,
+    image: "🧶",
+    category: "yarn"
+}
 ```
 
 ## File Structure

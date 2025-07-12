@@ -3,67 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mark Ziegler</title>
+    <title>Yarn Haven - Premium Yarn & Knitting Supplies</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-container">
-                <div class="logo">Mark Ziegler</div>
+                <div class="logo">
+                    <i class="fas fa-yarn"></i>
+                    Yarn Haven
+                </div>
                 <ul class="nav-links">
                     <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#projects">Projects</a></li>
                     <li><a href="#contact">Contact</a></li>
+                    <li class="cart-icon">
+                        <a href="#cart" id="cart-toggle">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
     </header>
 
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="close-cart" id="close-cart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be added here dynamically -->
+        </div>
+        <div class="cart-total">
+            <div class="total-amount">
+                <span>Total:</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
     <main>
         <section id="home" class="hero">
             <div class="hero-content">
-                <h1>Hi, I'm Mark Ziegler</h1>
-                <p class="subtitle">Welcome to my personal website</p>
+                <h1>Welcome to Yarn Haven</h1>
+                <p class="subtitle">Premium yarns and knitting supplies for your next project</p>
                 <div class="cta-buttons">
-                    <a href="#about" class="btn btn-primary">Learn More</a>
-                    <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+                    <a href="#products" class="btn btn-primary">Shop Now</a>
+                    <a href="#about" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="products">
+            <div class="container">
+                <h2>Our Products</h2>
+                <div class="products-grid" id="products-grid">
+                    <!-- Products will be loaded dynamically -->
                 </div>
             </div>
         </section>
 
         <section id="about" class="about">
             <div class="container">
-                <h2>About Me</h2>
+                <h2>About Yarn Haven</h2>
                 <div class="about-content">
                     <div class="about-text">
-                        <p>I'm passionate about technology and creating meaningful solutions. This is where you can learn more about my background, skills, and interests.</p>
-                        <p>Feel free to explore my projects and get in touch if you'd like to collaborate or just say hello!</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="projects">
-            <div class="container">
-                <h2>Projects</h2>
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <h3>Project 1</h3>
-                        <p>Description of your first project goes here.</p>
-                        <a href="#" class="project-link">View Project</a>
-                    </div>
-                    <div class="project-card">
-                        <h3>Project 2</h3>
-                        <p>Description of your second project goes here.</p>
-                        <a href="#" class="project-link">View Project</a>
-                    </div>
-                    <div class="project-card">
-                        <h3>Project 3</h3>
-                        <p>Description of your third project goes here.</p>
-                        <a href="#" class="project-link">View Project</a>
+                        <p>We're passionate about providing the highest quality yarns and knitting supplies to crafters of all skill levels. Our carefully curated selection includes premium natural fibers, vibrant colors, and everything you need to bring your creative vision to life.</p>
+                        <p>Whether you're a beginner learning your first stitches or an experienced knitter working on complex patterns, we have the perfect materials for your next project.</p>
                     </div>
                 </div>
             </div>
@@ -73,11 +89,17 @@
             <div class="container">
                 <h2>Get in Touch</h2>
                 <div class="contact-content">
-                    <p>I'm always interested in new opportunities and collaborations. Feel free to reach out!</p>
+                    <p>Have questions about our products or need help with your order? We're here to help!</p>
                     <div class="contact-links">
-                        <a href="mailto:your.email@example.com" class="contact-link">Email</a>
-                        <a href="https://github.com/yourusername" class="contact-link">GitHub</a>
-                        <a href="https://linkedin.com/in/yourusername" class="contact-link">LinkedIn</a>
+                        <a href="mailto:hello@yarnhaven.com" class="contact-link">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                        <a href="tel:+1-555-0123" class="contact-link">
+                            <i class="fas fa-phone"></i> Call
+                        </a>
+                        <a href="#" class="contact-link">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
                     </div>
                 </div>
             </div>
@@ -86,7 +108,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 Mark Ziegler. All rights reserved.</p>
+            <p>&copy; 2024 Yarn Haven. All rights reserved.</p>
         </div>
     </footer>
 
