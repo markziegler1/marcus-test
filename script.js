@@ -85,18 +85,121 @@ const products = [
 // Shopping cart
 let cart = [];
 
-// DOM elements
-const cartSidebar = document.getElementById('cart-sidebar');
-const cartToggle = document.getElementById('cart-toggle');
-const closeCart = document.getElementById('close-cart');
-const cartItems = document.getElementById('cart-items');
-const cartTotal = document.getElementById('cart-total');
-const cartCount = document.querySelector('.cart-count');
-const checkoutBtn = document.getElementById('checkout-btn');
-const productsGrid = document.getElementById('products-grid');
-
 // Initialize the website
 document.addEventListener('DOMContentLoaded', function() {
+    // DOM elements
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartToggle = document.getElementById('cart-toggle');
+    const closeCart = document.getElementById('close-cart');
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    const cartCount = document.querySelector('.cart-count');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const productsGrid = document.getElementById('products-grid');
+    
+    // Check if elements exist before proceeding
+    if (!productsGrid) {
+        console.error('Products grid not found!');
+        return;
+    }
+    
+    // Display products
+    function displayProducts() {
+        productsGrid.innerHTML = '';
+        
+        products.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.innerHTML = `
+                <div class="product-image">
+                    <span>${product.image}</span>
+                </div>
+                <div class="product-details">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-description">${product.description}</p>
+                    <div class="product-price">$${product.price.toFixed(2)}</div>
+                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
+                        Add to Cart
+                    </button>
+                </div>
+            `;
+            productsGrid.appendChild(productCard);
+        });
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // Cart toggle
+        cartToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            cartSidebar.classList.add('active');
+        });
+        
+        // Close cart
+        closeCart.addEventListener('click', () => {
+            cartSidebar.classList.remove('active');
+        });
+        
+        // Close cart when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!cartSidebar.contains(e.target) && !cartToggle.contains(e.target)) {
+                cartSidebar.classList.remove('active');
+            }
+        });
+        
+        // Checkout button
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length > 0) {
+                alert('Thank you for your order! This is a demo site - no actual payment will be processed.');
+                cart = [];
+                updateCartDisplay();
+                cartSidebar.classList.remove('active');
+            } else {
+                alert('Your cart is empty!');
+            }
+        });
+    }
+
+    // Update cart display
+    function updateCartDisplay() {
+        cartItems.innerHTML = '';
+        
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 2rem;">Your cart is empty</p>';
+        } else {
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="cart-item-image">
+                        <span style="font-size: 2rem;">${item.image}</span>
+                    </div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+        }
+        
+        // Update cart count and total
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        cartCount.textContent = totalItems;
+        cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+    }
+
+    // Initialize
     displayProducts();
     setupEventListeners();
     updateCartDisplay();
@@ -310,64 +413,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Display products
-function displayProducts() {
-    productsGrid.innerHTML = '';
-    
-    products.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card';
-        productCard.innerHTML = `
-            <div class="product-image">
-                <span>${product.image}</span>
-            </div>
-            <div class="product-details">
-                <h3 class="product-title">${product.name}</h3>
-                <p class="product-description">${product.description}</p>
-                <div class="product-price">$${product.price.toFixed(2)}</div>
-                <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
-                    Add to Cart
-                </button>
-            </div>
-        `;
-        productsGrid.appendChild(productCard);
-    });
-}
-
-// Setup event listeners
-function setupEventListeners() {
-    // Cart toggle
-    cartToggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        cartSidebar.classList.add('active');
-    });
-    
-    // Close cart
-    closeCart.addEventListener('click', () => {
-        cartSidebar.classList.remove('active');
-    });
-    
-    // Close cart when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!cartSidebar.contains(e.target) && !cartToggle.contains(e.target)) {
-            cartSidebar.classList.remove('active');
-        }
-    });
-    
-    // Checkout button
-    checkoutBtn.addEventListener('click', () => {
-        if (cart.length > 0) {
-            alert('Thank you for your order! This is a demo site - no actual payment will be processed.');
-            cart = [];
-            updateCartDisplay();
-            cartSidebar.classList.remove('active');
-        } else {
-            alert('Your cart is empty!');
-        }
-    });
-}
-
-// Add to cart
+// Global functions for cart operations
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     const existingItem = cart.find(item => item.id === productId);
@@ -381,7 +427,48 @@ function addToCart(productId) {
         });
     }
     
-    updateCartDisplay();
+    // Update cart display
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    const cartCount = document.querySelector('.cart-count');
+    
+    if (cartItems && cartTotal && cartCount) {
+        cartItems.innerHTML = '';
+        
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 2rem;">Your cart is empty</p>';
+        } else {
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="cart-item-image">
+                        <span style="font-size: 2rem;">${item.image}</span>
+                    </div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+        }
+        
+        // Update cart count and total
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        cartCount.textContent = totalItems;
+        cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+    }
     
     // Show success message
     const btn = event.target;
@@ -395,46 +482,6 @@ function addToCart(productId) {
     }, 1000);
 }
 
-// Update cart display
-function updateCartDisplay() {
-    cartItems.innerHTML = '';
-    
-    if (cart.length === 0) {
-        cartItems.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 2rem;">Your cart is empty</p>';
-    } else {
-        cart.forEach(item => {
-            const cartItem = document.createElement('div');
-            cartItem.className = 'cart-item';
-            cartItem.innerHTML = `
-                <div class="cart-item-image">
-                    <span style="font-size: 2rem;">${item.image}</span>
-                </div>
-                <div class="cart-item-details">
-                    <div class="cart-item-title">${item.name}</div>
-                    <div class="cart-item-price">$${item.price.toFixed(2)}</div>
-                    <div class="cart-item-quantity">
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                        <span>${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                    </div>
-                </div>
-                <button class="remove-item" onclick="removeFromCart(${item.id})">
-                    <i class="fas fa-trash"></i>
-                </button>
-            `;
-            cartItems.appendChild(cartItem);
-        });
-    }
-    
-    // Update cart count and total
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
-    cartCount.textContent = totalItems;
-    cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
-}
-
-// Update quantity
 function updateQuantity(productId, change) {
     const item = cart.find(item => item.id === productId);
     
@@ -444,15 +491,57 @@ function updateQuantity(productId, change) {
         if (item.quantity <= 0) {
             removeFromCart(productId);
         } else {
-            updateCartDisplay();
+            // Trigger cart display update
+            addToCart(productId); // This will update the display
         }
     }
 }
 
-// Remove from cart
 function removeFromCart(productId) {
     cart = cart.filter(item => item.id !== productId);
-    updateCartDisplay();
+    
+    // Update cart display
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    const cartCount = document.querySelector('.cart-count');
+    
+    if (cartItems && cartTotal && cartCount) {
+        cartItems.innerHTML = '';
+        
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 2rem;">Your cart is empty</p>';
+        } else {
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="cart-item-image">
+                        <span style="font-size: 2rem;">${item.image}</span>
+                    </div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+        }
+        
+        // Update cart count and total
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        cartCount.textContent = totalItems;
+        cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+    }
 }
 
 // Add loading animation
